@@ -9,7 +9,8 @@ function App() {
     password: ""
   });
 
-  const [users, useUsers] = useState([])
+  const [users, setUsersList] = useState([])
+
   const handlechange = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value })
@@ -18,7 +19,16 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     //console.log(user);
-    useUsers([...users, { ...user, id: crypto.randomUUID() }])
+
+    if(user.id){
+      const updatedUsers = users.map((item)=>
+       item.id === user.id ? {...user} : item
+      )
+      setUsersList(updatedUsers)
+    }else{
+       setUsersList([...users, { ...user, id: crypto.randomUUID() }])
+    }
+    
     setUser({
       name: "",
       email: "",
@@ -27,12 +37,19 @@ function App() {
     })
   };
 
-  const handleDelete = () => {
-    console.log("deleted!")
+  const handleEdit = (item) => {
+    setUser(item);
+    console.log(item)
   }
-  useEffect(() => {
-    console.log(users)
-  }, [users])
+  const handleDelete = (id) => {
+    const updatedUsers = users.filter((item)=>{
+      return id !== item.id
+    });
+    setUsersList(updatedUsers);
+  }
+
+
+
   return (
     <div className="container">
       <div className="form">
@@ -47,7 +64,7 @@ function App() {
           <br /><br />
           <input type="password" placeholder='Password' name="password" value={user.password} onChange={handlechange} />
           <br /><br />
-          <button>Save</button>
+          <button>{user.id ? "update" : "Save"}</button>
         </form>
       </div>
 
@@ -79,8 +96,8 @@ function App() {
                   gap: "5px"
                 }}
               >
-                <button>Edit</button>
-                <button onClick={handleDelete}>Delete</button>
+                <button onClick={() => handleEdit(item)}>Edit</button>
+                <button onClick={() => handleDelete(item.id)}>Delete</button>
               </td>
             </tr>
           ))}
