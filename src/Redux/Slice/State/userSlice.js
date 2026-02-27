@@ -22,9 +22,12 @@ const userSlice = createSlice({
     },
     deleteUser(state, actions){
         state.users = actions.payload
+    },
+    editUser(state,action){
+        state.users = action.payload
     }
   },
 });
 
-export const { setUser, setUsersList, deleteUser} = userSlice.actions
+export const { setUser, setUsersList, deleteUser, editUser} = userSlice.actions
 export default userSlice.reducer;

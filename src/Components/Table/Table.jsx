@@ -5,7 +5,7 @@ import { UserContext } from "../../Context/UserContextProvider"
 
 //Redux
 import {useDispatch, useSelector } from "react-redux";
-import { deleteUser } from "../../Redux/Slice/State/userSlice";
+import { deleteUser, setUser } from "../../Redux/Slice/State/userSlice";
 
 
 const Table = () => {
@@ -19,8 +19,11 @@ const Table = () => {
         return id !== item.id;
       });
       dispatch(deleteUser(updatedUsers));
-    }
+    };
 
+    const handleEdit = (item) => {
+        dispatch(setUser(item))
+    };
   return (
     <div className="table">
         <h2>Records</h2>
