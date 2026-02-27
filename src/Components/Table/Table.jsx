@@ -1,8 +1,26 @@
 import { useContext } from "react"
-import { UserContext } from "../Context/UserContextProvider"
+
+//Context
+import { UserContext } from "../../Context/UserContextProvider"
+
+//Redux
+import {useDispatch, useSelector } from "react-redux";
+import { deleteUser } from "../../Redux/Slice/State/userSlice";
+
 
 const Table = () => {
-    const {users, handleDelete, handleEdit} = useContext(UserContext)
+    // const {users, handleDelete, handleEdit} = useContext(UserContext)
+
+    const dispatch = useDispatch();
+    const{users} = useSelector((state) => state.user);
+
+    const handleDelete = (id) =>{
+      const updatedUsers = users.filter((item) => {
+        return id !== item.id;
+      });
+      dispatch(deleteUser(updatedUsers));
+    }
+
   return (
     <div className="table">
         <h2>Records</h2>

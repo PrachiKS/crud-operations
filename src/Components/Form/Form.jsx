@@ -1,9 +1,35 @@
-import { useContext } from "react"
-import { UserContext } from "../Context/UserContextProvider"
+import { useContext } from "react";
+
+//Context
+import { UserContext } from "../../Context/UserContextProvider"
+
+//Redux
+import {useDispatch, useSelector } from "react-redux";
+import { setUser, setUsersList} from "../../Redux/Slice/State/userSlice";
 
 const Form = () => {
-    const {user, handleSubmit, handlechange} = useContext(UserContext)
-  return (
+    // const {user, handleSubmit, handlechange} = useContext(UserContext)
+   
+    const dispatch = useDispatch();
+    const{user} = useSelector((state) => state.user);
+
+    const handlechange = (e) => {
+      const {name, value} = e.target;
+      dispatch(setUser({[name]:value}))
+    };
+
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      dispatch(setUsersList({...user, id:crypto.randomUUID()}))
+      dispatch(setUser({
+        name: "",
+        email: "",
+        phone: "",
+        password: ""
+      }))
+    }
+
+    return (
     <div className="form">
         <h2>Create Record</h2>
         <form onSubmit={handleSubmit}>
